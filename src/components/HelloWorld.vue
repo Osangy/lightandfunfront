@@ -1,0 +1,121 @@
+<template>
+  <div class="chart">
+    <h1>Progression de ton poids</h1>
+    <line-chart :chart-data="datacollection" :options="{
+      animation: {
+        duration: 2000,
+      },
+      legend: {
+        display: false,
+      },
+      scales: {
+        xAxes : [{
+            ticks: {
+              autoSkipPadding: 10,
+            },
+            gridLines: {
+              display: false,
+              drawBorder: false,
+            }
+        }],
+        yAxes : [{
+            gridLines: {
+              display: false,
+              drawBorder: false,
+            }
+        }],
+      },
+      maintainAspectRation: false
+    }"></line-chart>
+  </div>
+</template>
+
+
+<script>
+import axios from 'axios';
+import moment from 'moment';
+import LineChart from './LineChart';
+
+moment.locale('fr');
+
+export default {
+  name: 'HelloWorld',
+  components: {
+    LineChart,
+  },
+  data() {
+    return {
+      msg: 'Welcome to Your Vue.js App',
+      weights: [],
+      errors: [],
+      datacollection: null,
+    };
+  },
+
+  // Fetches posts when the component is created.
+  created() {
+    const url = `${process.env.API_URL}api/weight/${this.$route.params.messengerid}`;
+    axios.get(url)
+      .then((response) => {
+        this.weights = response.data.weights;
+        this.fillData();
+      })
+      .catch((e) => { this.errors.push(e); });
+  },
+  methods: {
+    fillData() {
+      const finalWeights = [];
+      const finalLabels = [];
+      this.weights.forEach((obj) => {
+        finalWeights.push(obj.weight);
+        finalLabels.push(moment(obj.createdAt).format('Do MMM'));
+      });
+
+      this.datacollection = {
+        labels: finalLabels,
+        datasets: [
+          {
+            label: 'Ton poids',
+            backgroundColor: '#DC1649',
+            pointBackgroundColor: 'white',
+            pointBorderColor: '#DC1649',
+            pointRadius: '4',
+            borderWidth: '1px',
+            lineTension: 0.4,
+            data: finalWeights,
+          },
+        ],
+      };
+    },
+    getRandomInt() {
+      return Math.floor(Math.random() * ((50 - 5) + 1)) + 5;
+    },
+  },
+};
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+h1,
+h2 {
+  font-weight: normal;
+  margin-bottom: 40px;
+}
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+li {
+  display: inline-block;
+  margin: 0 10px;
+}
+a {
+  color: #42b983;
+}
+.chart{
+  max-height: 100%;
+}
+#line-chart{
+  margin: 10px;
+}
+</style>
