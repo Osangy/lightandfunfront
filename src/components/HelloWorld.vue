@@ -1,6 +1,6 @@
 <template>
   <div class="chart">
-    <h1>Progression de ton poids</h1>
+    <h1>Evolution de ton poids</h1>
     <line-chart :chart-data="datacollection" :options="{
       animation: {
         duration: 2000,
