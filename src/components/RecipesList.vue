@@ -5,7 +5,7 @@
       <li v-for="recipe in recipes" v-bind:key="recipe.title" class="top">
         <div class="recipe-lign">
           <ul>
-            <li>{{recipe.title}}</li>
+            <li class="title">{{recipe.title}}</li>
             <li>
               <button v-bind:id="recipe.id" type="button" v-on:click="video">Vidéo</button>
               <button v-bind:id="recipe.id" type="button" v-on:click="fiche">Fiche recette</button>
@@ -88,12 +88,19 @@ li.top {
   padding-bottom: 10px;
   padding-left: 10px;
 }
+li.title {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
 button {
   background-color: #00BFD7;
   border: none;
   color: white;
   font-size: 16px;
   border-radius: 4px;
+  height: 35px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 a {
   color: #42b983;
