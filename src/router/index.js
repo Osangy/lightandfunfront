@@ -9,7 +9,7 @@ export default new Router({
   mode: 'history',
   routes: [
     {
-      path: '/weight/:messengerid',
+      path: '/weight/:messengerid/goal/:goal',
       name: 'HelloWorld',
       component: HelloWorld,
     },

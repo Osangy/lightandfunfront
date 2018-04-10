@@ -22,6 +22,10 @@
             gridLines: {
               display: false,
               drawBorder: false,
+            },
+            ticks: {
+              suggestedMin: 65,
+              suggestedMax: 85
             }
         }],
       },
@@ -65,9 +69,12 @@ export default {
   methods: {
     fillData() {
       const finalWeights = [];
+      const weightGoals = [];
+      const weightGoal = this.$route.params.goal;
       const finalLabels = [];
       this.weights.forEach((obj) => {
         finalWeights.push(obj.weight);
+        weightGoals.push(weightGoal);
         finalLabels.push(moment(obj.createdAt).format('Do MMM'));
       });
 
@@ -79,13 +86,27 @@ export default {
             backgroundColor: '#DC1649',
             pointBackgroundColor: 'white',
             pointBorderColor: '#DC1649',
-            pointRadius: '4',
+            pointRadius: '2',
             borderWidth: '1px',
             lineTension: 0.4,
             data: finalWeights,
           },
         ],
       };
+
+      if (this.$route.params.goal !== 0) {
+        this.datacollection.datasets.push({
+          label: 'Objectif de poids',
+          fill: false,
+          pointBackgroundColor: 'white',
+          pointBorderColor: '#74b9ff',
+          pointRadius: '2',
+          borderWidth: '1px',
+          borderColor: '#74b9ff',
+          lineTension: 0.4,
+          data: weightGoals,
+        });
+      }
     },
     getRandomInt() {
       return Math.floor(Math.random() * ((50 - 5) + 1)) + 5;
