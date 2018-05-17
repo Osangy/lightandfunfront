@@ -3,16 +3,22 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
     <title>Plume</title>
   </head>
   <body style="height:100%;">
-    <script>(function(d, s, id){
+    <!-- <script>(function(d, s, id){
       var js, fjs = d.getElementsByTagName(s)[0];
       if (d.getElementById(id)) {return;}
       js = d.createElement(s); js.id = id;
-      js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
+      js.src = "//connect.facebook.net/en_US/messenger.Extensions.js";
       fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'Messenger'));</script>
+    }(document, 'script', 'Messenger'));
+
+    window.extAsyncInit = function() {
+      console.log("loaded");
+    };
+  </script> -->
     <div id="app"></div>
     <!-- built files will be auto injected -->
   </body>

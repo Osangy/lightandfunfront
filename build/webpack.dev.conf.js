@@ -39,6 +39,10 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       : false,
     publicPath: config.dev.assetsPublicPath,
     proxy: config.dev.proxyTable,
+    headers: {
+      "X-Frame-Options": "ALLOW-FROM https://www.messenger.com/",
+      "X-Frame-Options": "ALLOW-FROM https://www.facebook.com/"
+    },
     quiet: true, // necessary for FriendlyErrorsPlugin
     watchOptions: {
       poll: config.dev.poll,

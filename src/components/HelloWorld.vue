@@ -51,6 +51,7 @@ export default {
     return {
       msg: 'Welcome to Your Vue.js App',
       weights: [],
+      userWeight: null,
       errors: [],
       datacollection: null,
     };
@@ -58,23 +59,39 @@ export default {
 
   // Fetches posts when the component is created.
   created() {
-    const url = `${process.env.API_URL}api/weight/${this.$route.params.messengerid}`;
-    axios.get(url)
-      .then((response) => {
-        this.weights = response.data.weights;
-        this.fillData();
-      })
-      .catch((e) => { this.errors.push(e); });
+    if (!this.$route.params.messengerid) {
+      window.MessengerExtensions.getContext(`${process.env.APP_ID}`, (threadContext) => {
+        const url = `${process.env.API_URL}api/weight/${threadContext.psid}`;
+        axios.get(url)
+          .then((response) => {
+            this.weights = response.data.weights;
+            this.userWeight = response.data.user_weight;
+            this.fillData();
+          })
+          .catch((e) => { this.errors.push(e); });
+      }, (err) => {
+        // eslint-disable-next-line
+        console.error(err);
+      });
+    } else {
+      const url = `${process.env.API_URL}api/weight/${this.$route.params.messengerid}`;
+      axios.get(url)
+        .then((response) => {
+          this.weights = response.data.weights;
+          this.userWeight = response.data.user_weight;
+          this.fillData();
+        })
+        .catch((e) => { this.errors.push(e); });
+    }
   },
   methods: {
     fillData() {
       const finalWeights = [];
       const weightGoals = [];
-      const weightGoal = this.$route.params.goal;
       const finalLabels = [];
       this.weights.forEach((obj) => {
         finalWeights.push(obj.weight);
-        weightGoals.push(weightGoal);
+        if (this.userWeight) weightGoals.push(this.userWeight);
         finalLabels.push(moment(obj.createdAt).format('Do MMM'));
       });
 
@@ -94,8 +111,8 @@ export default {
         ],
       };
 
-      if (this.$route.params.goal !== 0) {
-        this.datacollection.datasets.push({
+      if (this.userWeight) {
+        this.datacollection.datasets.unshift({
           label: 'Objectif de poids',
           fill: false,
           pointBackgroundColor: 'white',
