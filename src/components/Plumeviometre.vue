@@ -1,6 +1,6 @@
 <template>
   <div id='main'>
-    <h1>Ton Plumeviomètre</h1>
+    <h1>Ton Plumomètre 📈🐥</h1>
     <div id="plumes">
       <h2>Au total tu as :</h2>
       <img v-if="plumes > 200" src="../assets/3_haut.png" height="80" width="120">
