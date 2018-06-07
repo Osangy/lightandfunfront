@@ -9,11 +9,18 @@
       <p>{{plumes}} plumes</p>
     </div>
     <div id="month">
-      <h2>En {{month}}, tu as récolté :</h2>
-      <img v-if="month_plumes > 15" src="../assets/3_haut.png" height="67" width="100">
-      <img v-else-if="month_plumes > 5" src="../assets/2_moyen.png" height="67" width="100">
+      <h2>En {{last_month}}, tu as récolté :</h2>
+      <img v-if="last_month_plumes > 15" src="../assets/3_haut.png" height="67" width="100">
+      <img v-else-if="last_month_plumes > 5" src="../assets/2_moyen.png" height="67" width="100">
       <img v-else src="../assets/1_petit.png" height="67" width="100">
-      <p>{{month_plumes}} plumes</p>
+      <p>{{last_month_plumes}} plumes</p>
+    </div>
+    <div id="month">
+      <h2>Ce mois ci, tu as déjà récolté :</h2>
+      <img v-if="this_month_plumes > 15" src="../assets/3_haut.png" height="67" width="100">
+      <img v-else-if="this_month_plumes > 5" src="../assets/2_moyen.png" height="67" width="100">
+      <img v-else src="../assets/1_petit.png" height="67" width="100">
+      <p>{{this_month_plumes}} plumes</p>
     </div>
   </div>
 </template>
@@ -31,8 +38,10 @@ export default {
     return {
       msg: 'Welcome to Your Vue.js App',
       plumes: 0,
-      month: null,
-      month_plumes: 0,
+      this_month: null,
+      this_month_plumes: 0,
+      last_month: null,
+      last_month_plumes: 0,
       errors: [],
       datacollection: null,
     };
@@ -46,8 +55,10 @@ export default {
         axios.get(url)
           .then((response) => {
             this.plumes = response.data.plumes;
-            this.month = response.data.month_plumes.month;
-            this.month_plumes = response.data.month_plumes.plumes;
+            this.this_month = response.data.this_month_plumes.month;
+            this.this_month_plumes = response.data.this_month_plumes.plumes;
+            this.last_month = response.data.last_month_plumes.month;
+            this.last_month_plumes = response.data.last_month_plumes.plumes;
           })
           .catch((e) => { this.errors.push(e); });
       }, (err) => {
@@ -59,8 +70,10 @@ export default {
       axios.get(url)
         .then((response) => {
           this.plumes = response.data.plumes;
-          this.month = response.data.month_plumes.month;
-          this.month_plumes = response.data.month_plumes.plumes;
+          this.this_month = response.data.this_month_plumes.month;
+          this.this_month_plumes = response.data.this_month_plumes.plumes;
+          this.last_month = response.data.last_month_plumes.month;
+          this.last_month_plumes = response.data.last_month_plumes.plumes;
         })
         .catch((e) => { this.errors.push(e); });
     }
